@@ -110,6 +110,15 @@ App = {
           // Show them on frontend
       },
 
+      createTask: async () => {
+        App.setLoading(true)
+        const content = $('#newTask').val()
+        await App.todoList.createTask(content)
+
+        // Reload the page
+        window.location.reload()
+      },
+
       setLoading: (boolean) => {
         App.loading = boolean
         const loader = $('#loader')
