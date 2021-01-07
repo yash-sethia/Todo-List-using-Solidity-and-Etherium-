@@ -26,14 +26,28 @@ contract('TodoList', (accounts) => {
     })
 
     it('creates Task', async() => {
-        const results = await this.todoList.createTask('A new Task')
+        const result = await this.todoList.createTask('A new Task')
         const taskCount = await this.todoList.taskCount()
         assert.equal(taskCount, 2)
         // Accessing the event we created in TodoList.sol file
         // You can colsole log this and write 'truffle test' to check
-        const event = result.log[0].args
+        const event = result.logs[0].args
         assert.equal(event.id.toNumber(), 2)
         assert.equal(event.completed, false)
         assert.equal(event.content, 'A new Task')
     })
+
+    it('toggles task completion', async() => {
+        const result = await this.todoList.toggleCompleted(1)
+        const task = await this.todoList.tasks(1)
+        assert.equal(task.completed, true)
+        // Accessing the event we created in TodoList.sol file
+        // You can colsole log this and write 'truffle test' to check
+        const event = result.logs[0].args
+        assert.equal(event.id.toNumber(), 1)
+        assert.equal(event.completed, true)
+    })
+
+
+    
 })
